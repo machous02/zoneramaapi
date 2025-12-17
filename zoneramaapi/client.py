@@ -2,12 +2,13 @@ from hashlib import sha256
 
 from zoneramaapi.mixins.account import AccountMixin
 from zoneramaapi.mixins.album import AlbumMixin
+from zoneramaapi.mixins.photo import PhotoMixin
 from zoneramaapi.mixins.tab import TabMixin
 from zoneramaapi.zeep.common import ServiceProxy
 from zoneramaapi.zeep.sync import ZeepSyncClients
 
 
-class ZoneramaClient(AccountMixin, AlbumMixin, TabMixin):
+class ZoneramaClient(AccountMixin, AlbumMixin, PhotoMixin, TabMixin):
     _zeep: ZeepSyncClients
     logged_in_as: int | None
 
