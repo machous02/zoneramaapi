@@ -19,3 +19,16 @@ with ZoneramaClient() as client:
     for album in albums:
         print(album.name)
 ```
+
+### ZIP album downloader
+
+```python
+import asyncio
+
+from httpx import AsyncClient
+
+from zoneramaapi import download_album
+
+client = AsyncClient()
+asyncio.run(download_album(client, 42))
+```
