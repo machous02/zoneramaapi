@@ -65,7 +65,7 @@ class AlbumMixin(BaseMixin):
                 If provided, the album is unlocked before fetching info. Defaults to None.
 
         Returns:
-            OrderedDict: Dictionary with info about the album.
+            Album: Album object with info about the album.
         """
         if password is not None:
             self.unlock_album(id, password)
@@ -84,7 +84,7 @@ class AlbumMixin(BaseMixin):
             id (AccountID): A Zonerama account ID.
 
         Returns:
-            list[OrderedDict]: A list of dictionaries with info about the albums.
+            list[Album]: A list of Album objects with info about the albums.
         """
         response = self._data_service.GetAlbums(id)
 
