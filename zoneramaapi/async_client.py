@@ -1,6 +1,7 @@
 from hashlib import sha256
 
 from zoneramaapi.zeep.async_ import ZeepAsyncClients
+from zoneramaapi.zeep.common import AsyncServiceProxy
 
 
 class ZoneramaAsyncClient:
@@ -19,13 +20,15 @@ class ZoneramaAsyncClient:
         return
 
     async def close(self):
-        await self._zeep.close()
         if self.logged_in:
             await self.logout()
+        await self._zeep.close()
 
     async def login(self, username: str, password: str) -> bool:
         service = self._zeep.api.service
-        response = await service.Login(username, sha256(bytes(password, "utf-8")).hexdigest())
+        response = await service.Login(
+            username, sha256(bytes(password, "utf-8")).hexdigest()
+        )
         self.logged_in_as = response.Result if response.Success else None
         return response.Success
 
@@ -44,3 +47,11 @@ class ZoneramaAsyncClient:
     @property
     def logged_in(self) -> bool:
         return self.logged_in_as is not None
+
+    @property
+    def _api_service(self) -> AsyncServiceProxy:
+        return self._zeep.api.service  # type: ignore
+
+    @property
+    def _data_service(self) -> AsyncServiceProxy:
+        return self._zeep.data.service  # type: ignore

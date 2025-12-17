@@ -1,6 +1,7 @@
 from hashlib import sha256
 
 from zoneramaapi.zeep.sync import ZeepSyncClients
+from zoneramaapi.zeep.common import ServiceProxy
 
 
 class ZoneramaClient:
@@ -19,9 +20,9 @@ class ZoneramaClient:
         return
 
     def close(self):
-        self._zeep.close()
         if self.logged_in:
             self.logout()
+        self._zeep.close()
 
     def login(self, username: str, password: str) -> bool:
         service = self._zeep.api.service
@@ -44,3 +45,11 @@ class ZoneramaClient:
     @property
     def logged_in(self) -> bool:
         return self.logged_in_as is not None
+
+    @property
+    def _api_service(self) -> ServiceProxy:  # type: ignore
+        return self._zeep.api.service
+
+    @property
+    def _data_service(self) -> ServiceProxy:  # type: ignore
+        return self._zeep.data.service
