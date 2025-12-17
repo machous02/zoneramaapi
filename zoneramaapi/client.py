@@ -2,14 +2,16 @@ from hashlib import sha256
 
 from zoneramaapi.zeep.sync import ZeepSyncClients
 from zoneramaapi.zeep.common import ServiceProxy
+from zoneramaapi.mixins.album import AlbumMixin
 
 
-class ZoneramaClient:
+class ZoneramaClient(AlbumMixin):
     _zeep: ZeepSyncClients
     logged_in_as: int | None
 
     def __init__(self):
         self._zeep = ZeepSyncClients()
+        self.logged_in_as = None
 
     def __enter__(self):
         self._zeep.__enter__()
