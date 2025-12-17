@@ -4,13 +4,14 @@ from zoneramaapi.mixins.account import AccountMixin
 from zoneramaapi.mixins.album import AlbumMixin
 from zoneramaapi.mixins.photo import PhotoMixin
 from zoneramaapi.mixins.tab import TabMixin
+from zoneramaapi.models.aliases import AccountID
 from zoneramaapi.zeep.common import ServiceProxy
 from zoneramaapi.zeep.sync import ZeepSyncClients
 
 
 class ZoneramaClient(AccountMixin, AlbumMixin, PhotoMixin, TabMixin):
     _zeep: ZeepSyncClients
-    logged_in_as: int | None
+    logged_in_as: AccountID | None
 
     def __init__(self):
         self._zeep = ZeepSyncClients()
