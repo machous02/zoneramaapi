@@ -106,8 +106,8 @@ class AlbumMixin(BaseMixin):
 
         raise_for_error(response, f"get albums in tab with ID {id}")
 
-        # When there are no albums, the API returns Album as None
-        if response.Result.Album is None:
+        # When there are no albums, the API returns None
+        if response.Result is None:
             return []
 
         return [Album.from_api(album.__values__) for album in response.Result.Album]
@@ -278,8 +278,8 @@ class AsyncAlbumMixin(AsyncBaseMixin):
 
         raise_for_error(response, f"get albums in tab with ID {id}")
 
-        # When there are no albums, the API returns Album as None
-        if response.Result.Album is None:
+        # When there are no albums, the API returns None
+        if response.Result is None:
             return []
 
         return [Album.from_api(album.__values__) for album in response.Result.Album]
