@@ -1,12 +1,19 @@
 from hashlib import sha256
 
+from zoneramaapi.mixins.account import AsyncAccountMixin
+from zoneramaapi.mixins.album import AsyncAlbumMixin
+from zoneramaapi.mixins.photo import AsyncPhotoMixin
+from zoneramaapi.mixins.tab import AsyncTabMixin
+from zoneramaapi.models.aliases import AccountID
 from zoneramaapi.zeep.async_ import ZeepAsyncClients
 from zoneramaapi.zeep.common import AsyncServiceProxy
 
 
-class ZoneramaAsyncClient:
+class ZoneramaAsyncClient(
+    AsyncAccountMixin, AsyncAlbumMixin, AsyncPhotoMixin, AsyncTabMixin
+):
     _zeep: ZeepAsyncClients
-    logged_in_as: int | None
+    logged_in_as: AccountID | None
 
     def __init__(self):
         self._zeep = ZeepAsyncClients()
@@ -49,9 +56,9 @@ class ZoneramaAsyncClient:
         return self.logged_in_as is not None
 
     @property
-    def _api_service(self) -> AsyncServiceProxy:
+    def _api_service(self) -> AsyncServiceProxy:  # type: ignore
         return self._zeep.api.service  # type: ignore
 
     @property
-    def _data_service(self) -> AsyncServiceProxy:
+    def _data_service(self) -> AsyncServiceProxy:  # type: ignore
         return self._zeep.data.service  # type: ignore
