@@ -90,6 +90,10 @@ class AlbumMixin(BaseMixin):
 
         raise_for_error(response, f"get albums in account with ID {id}")
 
+        # When there are no albums, the API returns None
+        if response.Result is None:
+            return []
+
         return [Album.from_api(album.__values__) for album in response.Result.Album]
 
     def get_albums_in_tab(self, id: TabID) -> list[Album]:
@@ -261,6 +265,10 @@ class AsyncAlbumMixin(AsyncBaseMixin):
         response = await self._data_service.GetAlbums(id)
 
         raise_for_error(response, f"get albums in account with ID {id}")
+
+        # When there are no albums, the API returns None
+        if response.Result is None:
+            return []
 
         return [Album.from_api(album.__values__) for album in response.Result.Album]
 
