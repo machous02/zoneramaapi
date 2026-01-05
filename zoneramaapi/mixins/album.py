@@ -74,7 +74,7 @@ class AlbumMixin(BaseMixin):
 
         raise_for_error(response, f"get album with ID {id}")
 
-        return Album.from_api(response.Result.__values__)
+        return Album.from_api(response.Result.__values__, timezone=self.timezone)
 
     def get_albums_in_account(self, id: AccountID) -> list[Album]:
         """Get a list of dictionaries containing various information
@@ -94,7 +94,7 @@ class AlbumMixin(BaseMixin):
         if response.Result is None:
             return []
 
-        return [Album.from_api(album.__values__) for album in response.Result.Album]
+        return [Album.from_api(album.__values__, timezone=self.timezone) for album in response.Result.Album]
 
     def get_albums_in_tab(self, id: TabID) -> list[Album]:
         """Get a list of dictionaries containing various information
@@ -114,7 +114,7 @@ class AlbumMixin(BaseMixin):
         if response.Result is None:
             return []
 
-        return [Album.from_api(album.__values__) for album in response.Result.Album]
+        return [Album.from_api(album.__values__, timezone=self.timezone) for album in response.Result.Album]
 
     def unlock_album(self, id: AlbumID, password: str) -> None:
         """This method is meant to be called prior to accessing an album protected by a password.
@@ -250,7 +250,7 @@ class AsyncAlbumMixin(AsyncBaseMixin):
 
         raise_for_error(response, f"get album with ID {id}")
 
-        return Album.from_api(response.Result.__values__)
+        return Album.from_api(response.Result.__values__, timezone=self.timezone)
 
     async def get_albums_in_account(self, id: AccountID) -> list[Album]:
         """Get a list of dictionaries containing various information
@@ -270,7 +270,7 @@ class AsyncAlbumMixin(AsyncBaseMixin):
         if response.Result is None:
             return []
 
-        return [Album.from_api(album.__values__) for album in response.Result.Album]
+        return [Album.from_api(album.__values__, timezone=self.timezone) for album in response.Result.Album]
 
     async def get_albums_in_tab(self, id: TabID) -> list[Album]:
         """Get a list of dictionaries containing various information
@@ -290,7 +290,7 @@ class AsyncAlbumMixin(AsyncBaseMixin):
         if response.Result is None:
             return []
 
-        return [Album.from_api(album.__values__) for album in response.Result.Album]
+        return [Album.from_api(album.__values__, timezone=self.timezone) for album in response.Result.Album]
 
     async def unlock_album(self, id: AlbumID, password: str) -> None:
         """This method is meant to be called prior to accessing an album protected by a password.

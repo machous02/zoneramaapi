@@ -85,7 +85,7 @@ class PhotoMixin(BaseMixin):
 
         raise_for_error(response, f"get photo with ID {id}")
 
-        return Photo.from_api(response.Result.__values__)
+        return Photo.from_api(response.Result.__values__, timezone=self.timezone)
 
     def get_photos_in_album(
         self, id: AlbumID, *, password: str | None = None
@@ -109,7 +109,7 @@ class PhotoMixin(BaseMixin):
         if response.Result is None:
             return []
 
-        return [Photo.from_api(photo.__values__) for photo in response.Result.Photo]
+        return [Photo.from_api(photo.__values__, timezone=self.timezone) for photo in response.Result.Photo]
 
     def copy_photos(
         self, ids: list[PhotoID], album_id: AlbumID
@@ -292,7 +292,7 @@ class AsyncPhotoMixin(AsyncBaseMixin):
 
         raise_for_error(response, f"get photo with ID {id}")
 
-        return Photo.from_api(response.Result.__values__)
+        return Photo.from_api(response.Result.__values__, timezone=self.timezone)
 
     async def get_photos_in_album(
         self, id: AlbumID, *, password: str | None = None
@@ -316,7 +316,7 @@ class AsyncPhotoMixin(AsyncBaseMixin):
         if response.Result is None:
             return []
 
-        return [Photo.from_api(photo.__values__) for photo in response.Result.Photo]
+        return [Photo.from_api(photo.__values__, timezone=self.timezone) for photo in response.Result.Photo]
 
     async def copy_photos(
         self, ids: list[PhotoID], album_id: AlbumID

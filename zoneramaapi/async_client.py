@@ -1,3 +1,4 @@
+import datetime
 from hashlib import sha256
 
 from zoneramaapi.mixins.account import AsyncAccountMixin
@@ -6,7 +7,7 @@ from zoneramaapi.mixins.photo import AsyncPhotoMixin
 from zoneramaapi.mixins.tab import AsyncTabMixin
 from zoneramaapi.models.aliases import AccountID
 from zoneramaapi.zeep.async_ import ZeepAsyncClients
-from zoneramaapi.zeep.common import AsyncServiceProxy
+from zoneramaapi.zeep.common import AsyncServiceProxy, raise_for_error
 
 
 class ZoneramaAsyncClient(
@@ -14,9 +15,12 @@ class ZoneramaAsyncClient(
 ):
     _zeep: ZeepAsyncClients
     logged_in_as: AccountID | None
+    timezone: datetime.tzinfo | None
 
     def __init__(self):
         self._zeep = ZeepAsyncClients()
+        self.logged_in_as = None
+        self.timezone = None
 
     async def __aenter__(self):
         await self._zeep.__aenter__()
@@ -50,6 +54,15 @@ class ZoneramaAsyncClient(
             self.logged_in_as = None
 
         return response.Success
+
+    async def set_timezone(self, tz: datetime.tzinfo) -> None:
+        """Set the timezone for the current session.
+
+        Args:
+            tz (datetime.tzinfo): The timezone as a datetime tzinfo object.
+        """
+        await self._api_service.SetTimeZoneOffset(tz)
+        self.timezone = tz
 
     @property
     def logged_in(self) -> bool:

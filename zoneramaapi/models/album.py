@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, tzinfo
 
 from zoneramaapi.models.aliases import AccountID, AlbumID, PhotoID, TabID
-from zoneramaapi.models.utils import map_key
+from zoneramaapi.models.utils import map_key, map_value
 
 FIELD_MAP = {
     "ID": "id",
@@ -67,8 +67,13 @@ class Album:
     like: int
 
     @classmethod
-    def from_api(cls, data: dict) -> Album:
-        return cls(**{map_key(FIELD_MAP, k): v for k, v in data.items()})
+    def from_api(cls, data: dict, *, timezone: tzinfo | None = None) -> Album:
+        return cls(
+            **{
+                map_key(FIELD_MAP, k): map_value(v, timezone=timezone)
+                for k, v in data.items()
+            }
+        )
 
     def __repr__(self) -> str:
         return f"<Album id={self.id} name={self.name!r}>"

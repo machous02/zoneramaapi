@@ -9,8 +9,6 @@ from zoneramaapi.zeep.common import raise_for_error
 
 
 class AccountMixin(BaseMixin):
-    logged_in_as: AccountID | None
-
     def create_account(self, email: str) -> None:
         """Send a request to create an account with the provided email.
         Confirmation is sent to the address.
@@ -73,7 +71,7 @@ class AccountMixin(BaseMixin):
 
         raise_for_error(response, "get account")
 
-        return Account.from_api(response.Result.__values__)
+        return Account.from_api(response.Result.__values__, timezone=self.timezone)
 
     def follow(self, id: AccountID) -> None:
         """Follow an account with the given ID.
@@ -121,8 +119,6 @@ class AccountMixin(BaseMixin):
 
 
 class AsyncAccountMixin(AsyncBaseMixin):
-    logged_in_as: AccountID | None
-
     async def create_account(self, email: str) -> None:
         """Send a request to create an account with the provided email.
         Confirmation is sent to the address.
@@ -185,7 +181,7 @@ class AsyncAccountMixin(AsyncBaseMixin):
 
         raise_for_error(response, "get account")
 
-        return Account.from_api(response.Result.__values__)
+        return Account.from_api(response.Result.__values__, timezone=self.timezone)
 
     async def follow(self, id: AccountID) -> None:
         """Follow an account with the given ID.

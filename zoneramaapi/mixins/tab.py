@@ -58,7 +58,7 @@ class TabMixin(BaseMixin):
 
         raise_for_error(response, f"get tab with ID {id}")
 
-        return Tab.from_api(response.Result.__values__)
+        return Tab.from_api(response.Result.__values__, timezone=self.timezone)
 
     def get_tabs(self, id: AccountID) -> list[Tab]:
         """Get a list of dictionaries containing various information
@@ -74,7 +74,7 @@ class TabMixin(BaseMixin):
 
         raise_for_error(response, f"get tabs for account with ID {id}")
 
-        return [Tab.from_api(tab.__values__) for tab in response.Result.Tab]
+        return [Tab.from_api(tab.__values__, timezone=self.timezone) for tab in response.Result.Tab]
 
     def update_tab(
         self,
@@ -175,7 +175,7 @@ class AsyncTabMixin(AsyncBaseMixin):
 
         raise_for_error(response, f"get tab with ID {id}")
 
-        return Tab.from_api(response.Result.__values__)
+        return Tab.from_api(response.Result.__values__, timezone=self.timezone)
 
     async def get_tabs(self, id: AccountID) -> list[Tab]:
         """Get a list of dictionaries containing various information
@@ -191,7 +191,7 @@ class AsyncTabMixin(AsyncBaseMixin):
 
         raise_for_error(response, f"get tabs for account with ID {id}")
 
-        return [Tab.from_api(tab.__values__) for tab in response.Result.Tab]
+        return [Tab.from_api(tab.__values__, timezone=self.timezone) for tab in response.Result.Tab]
 
     async def update_tab(
         self,
